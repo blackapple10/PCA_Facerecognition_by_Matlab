@@ -1,12 +1,12 @@
-% ¼ÓÔØAT&TÈËÁ³Êı¾İ¿â£¨40¸öÈË£¬Ã¿ÈË10ÕÅÕÕÆ¬£¬¹²400ÕÅÕÕÆ¬£©
+% åŠ è½½AT&Täººè„¸æ•°æ®åº“ï¼ˆ40ä¸ªäººï¼Œæ¯äºº10å¼ ç…§ç‰‡ï¼Œå…±400å¼ ç…§ç‰‡ï¼‰
 close all;
 clear;
 clc;
-faces = imageSet('E:\matlab_archive\Matlab_DPP\pca\ORL_Faces', 'recursive');
+faces = imageSet('your_file_dictionary', 'recursive');
 
-% ¶ÁÈ¡Í¼ÏñÊı¾İ²¢½«Í¼Ïñ¾ØÕó×ª»»ÎªÒ»Î¬ÏòÁ¿
+% è¯»å–å›¾åƒæ•°æ®å¹¶å°†å›¾åƒçŸ©é˜µè½¬æ¢ä¸ºä¸€ç»´å‘é‡
 numImages = numel(faces);
-imageSize = [112, 92]; % Í¼Ïñ³ß´ç
+imageSize = [112, 92]; % å›¾åƒå°ºå¯¸
 X = zeros(prod(imageSize), numImages);
 
 for i = 1:numImages
@@ -14,31 +14,31 @@ for i = 1:numImages
     X(:, i) = img(:);
 end
 
-% Ê¹ÓÃPCA½øĞĞ½µÎ¬
-numComponents = 100; % Ñ¡ÔñÇ°50¸öÖ÷³É·Ö
+% ä½¿ç”¨PCAè¿›è¡Œé™ç»´
+numComponents = 100; % é€‰æ‹©å‰50ä¸ªä¸»æˆåˆ†
 [coeff, score, ~, ~, explained] = pca(X', 'NumComponents', numComponents);
 
-% Ñ¡ÔñÒ»¸ö²âÊÔÍ¼Ïñ£¨µÚ1¸öÈËµÄµÚ1ÕÅÕÕÆ¬£©
+% é€‰æ‹©ä¸€ä¸ªæµ‹è¯•å›¾åƒï¼ˆç¬¬1ä¸ªäººçš„ç¬¬1å¼ ç…§ç‰‡ï¼‰
 testImage = read(faces(2), 1);
 testImageVector = testImage(:);
 
-% ½«²âÊÔÍ¼ÏñÍ¶Ó°µ½PCA¿Õ¼äÖĞ
+% å°†æµ‹è¯•å›¾åƒæŠ•å½±åˆ°PCAç©ºé—´ä¸­
 testImageProjected = coeff' * double(testImageVector);
 
-% ¼ÆËãËùÓĞÑµÁ·Í¼Ïñµ½²âÊÔÍ¼ÏñµÄÍ¶Ó°¾àÀë
+% è®¡ç®—æ‰€æœ‰è®­ç»ƒå›¾åƒåˆ°æµ‹è¯•å›¾åƒçš„æŠ•å½±è·ç¦»
 for i=1:numImages
     distance = sqrt(sum((score(i)' - testImageProjected').^2, 2));
     list(i)=distance;
 end
 
-% ÕÒµ½¾àÀë×îĞ¡µÄÑµÁ·Í¼Ïñ£¬Ê¶±ğÎª¸ÃÈËµÄÉí·İ
+% æ‰¾åˆ°è·ç¦»æœ€å°çš„è®­ç»ƒå›¾åƒï¼Œè¯†åˆ«ä¸ºè¯¥äººçš„èº«ä»½
 [~, recognizedPerson] = min(list);
 
-% ÏÔÊ¾Ô­Ê¼²âÊÔÍ¼ÏñºÍÊ¶±ğ½á¹û
+% æ˜¾ç¤ºåŸå§‹æµ‹è¯•å›¾åƒå’Œè¯†åˆ«ç»“æœ
 subplot(1, 2, 1);
 imshow(testImage);
-title('²âÊÔÍ¼Ïñ');
+title('æµ‹è¯•å›¾åƒ');
 
 subplot(1, 2, 2);
 imshow(read(faces(recognizedPerson), 1));
-title(['Ê¶±ğÎªµÚ', num2str(recognizedPerson), '¸öÈË']);
+title(['è¯†åˆ«ä¸ºç¬¬', num2str(recognizedPerson), 'ä¸ªäºº']);
