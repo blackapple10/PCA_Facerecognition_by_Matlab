@@ -17,6 +17,9 @@ end
 % 使用PCA进行降维
 numComponents = 100; % 选择前50个主成分
 [coeff, score, ~, ~, explained] = pca(X', 'NumComponents', numComponents);
+%应用matlab自带计算函数pca（），coeff代表原始图像的线性组合关系，score代表投影
+%后的数据，explained代表每个主成分解释的原始数据的方差比
+%X要求转置，因为pca函数要求每列代表一个特征。
 
 % 选择一个测试图像（第1个人的第1张照片）
 testImage = read(faces(2), 1);
